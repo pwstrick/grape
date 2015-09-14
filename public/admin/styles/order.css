@@ -1,0 +1,39 @@
+/**
+ * 订单打印
+ */
+div, p, h3, table, tr, td {
+    font-family: sans-serif;
+    font-size: 11pt;
+    line-height: 18pt;
+}
+.container {
+    padding: 40px 40px 0;
+    vertical-align: middle;
+    width: 940px;
+}
+.container p {
+    margin: 5px 0;
+}
+.container h3 {
+    border-bottom: 1px solid black;
+}
+.container .header {
+    text-align: center;
+}
+.container .barcode {
+    height: 40px;
+}
+.container .barcode img {
+    width: 450px;
+}
+.container table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.container table, .container th, .container td {
+    border: 1px solid black;
+}
+@page {
+	 margin: 0mm;
+}
+

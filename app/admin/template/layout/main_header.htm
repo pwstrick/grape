@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <title><!--{echo $page_title}--></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="<!--{echo css_url('bootstrap.css')}-->" type="text/css" rel="stylesheet"/>
+    <link href="<!--{echo css_url('bootstrap-responsive.css')}-->" type="text/css" rel="stylesheet"/>
+    <link href="<!--{echo css_url('matrix-style.css')}-->" type="text/css" rel="stylesheet"/>
+	<link href="<!--{echo css_url('matrix-media.css')}-->" type="text/css" rel="stylesheet"/>
+    <link href="<!--{echo base_url('font-awesome/css/font-awesome.css')}-->" type="text/css" rel="stylesheet"/>
+    <link href="<!--{echo css_url('google-fonts.css')}-->" type="text/css" rel="stylesheet"/>
+    <!-- 美化下拉框的样式,可酌情引用-->
+    <link href="<!--{echo script_url('libs/select2/css/select2.css')}-->" type="text/css" rel="stylesheet"/>
+    <!-- 美化表单中input checkbox radio等控件样式,可酌情引用-->
+    <link href="<!--{echo script_url('libs/uniform/themes/default/css/uniform.default.css')}-->" type="text/css" rel="stylesheet"/>
+    <!-- 上传插件的样式,可酌情引用-->
+    <link href="<!--{echo script_url('libs/uploadify/css/uploadify.css')}-->" type="text/css" rel="stylesheet"/>
+    <!--[if lte IE 8]>
+    <script src="<!--{echo script_url('libs/respond/respond.js')}-->" type="text/javascript"></script>
+    <![endif]-->
+    <!--{if (!empty($page_css))}-->
+    <!--{foreach ($page_css as $key => $value)}-->
+    <!--{echo $value}-->
+    <!--{/foreach}-->
+    <!--{/if}-->
+    <!-- 检测CSS3属性支持的插件，让IE8等浏览器支持HTML5的标签-->
+    <script type="text/javascript" src="<!--{echo script_url('libs/modernizr/modernizr.js')}-->"></script>
+    <script type="text/javascript" src="<!--{echo script_url('config.js')}-->"></script>
+    <!--{if (!empty($page_scripts))}-->
+    <!--{foreach ($page_scripts as $key => $value)}-->
+    <!--{echo $value}-->
+    <!--{/foreach}-->
+    <!--{/if}-->
+</head>
+<body>
+    <!--Header-part LOGO背景图片-->
+    <div id="header">
+      <h1><a href="/">Huali</a></h1>
+    </div>
+    <!--close-Header-part-->
+    <!--top-Header-menu 顶部菜单-->
+    <div id="user-nav" class="navbar navbar-inverse">
+      <ul class="nav">
+        <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon-user"></i>  <span class="text">欢迎<!--{echo $page_account}--></span><b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="icon-user"></i> 我的信息</a></li>
+            <li class="divider"></li>
+            <li><a href="<!--{echo base_url('public/logout')}-->"><i class="icon-key"></i> 退出登录</a></li>
+          </ul>
+        </li>
+        <li><a href="<!--{echo base_url('public/logout')}-->"><i class="icon-share-alt"></i> <span class="text">退出登录</span></a></li>
+      </ul>
+    </div>
+    <!--close-top-Header-menu-->
+    <!--sidebar-menu，侧边栏菜单-->
+    <div id="sidebar">
+      <ul>
+      <!--{foreach ($page_menu as $menu)}-->
+      	<!--{if(isset($menu['sub']))}-->
+	    <li class="submenu <!--{echo $menu['css']}-->"> <a href="#"><i class="icon-<!--{echo $menu['icon']}-->"></i> <span><!--{echo $menu['text']}--></span></a>
+	    	<ul style="<!--{echo $menu['style']}-->">
+	      		<!--{foreach ($menu['sub'] as $sub)}-->
+	      		<li class="<!--{echo $sub['css']}-->"><a href="<!--{echo $sub['url']}-->"><!--{echo $sub['text']}--></a></li>
+	      		<!--{/foreach}-->
+	      	</ul>
+	    </li>
+      	<!--{else}-->
+        <li class="<!--{echo $menu['css']}-->"><a href="<!--{echo $menu['url']}-->" class="<!--{echo $menu['css']}-->"><i class="icon-<!--{echo $menu['icon']}-->"></i> <span><!--{echo $menu['text']}--></span></a> </li>	
+      	<!--{/if}-->
+      <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--sidebar-menu-->
+    <!--main-container-part-->
+    <div id="content">
+        <!--breadcrumbs面包屑导航-->
+        <div id="content-header">
+              <div id="breadcrumb">
+              <!--{foreach ($breadcrumbs as $key=>$breadcrumb)}-->
+              	<!--{if ($key == 0)}-->
+              	<a href="<!--{echo $breadcrumb['url']}-->" class="<!--{echo $breadcrumb['css']}-->"><i class="icon-home"></i> <!--{echo $breadcrumb['name']}--></a>
+              	<!--{else}-->
+              	<a href="<!--{echo $breadcrumb['url']}-->" class="<!--{echo $breadcrumb['css']}-->"><!--{echo $breadcrumb['name']}--></a>
+              	<!--{/if}-->
+              <!--{/foreach}-->
+              </div>
+        </div>
+        <!--End-breadcrumbs-->
+        <div class="container-fluid">
+            <section class="row-fluid">
+                  <!--不同页面的输出在这里-->
+            
+    

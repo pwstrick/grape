@@ -1,0 +1,101 @@
+.sheet-bg{
+	position:relative;top:0pt;left:0pt
+}
+.sheet-bg img{
+	width:644pt;height:355.6pt
+}
+.shenge-bg img{
+	width:540.4pt;height:364pt
+}
+.lebang-bg img{
+	width:532pt;height:294pt
+}
+p{
+	font-family:sans-serif;font-size:11pt;font-weight:bold;position:absolute;
+	border:1px red solid;height:14pt;line-height:18pt;margin:0;padding:0
+}
+.receipt{
+	top:143pt;left:95pt;width:215pt
+}
+.phone{
+	top:161pt;left:74pt;width:107.5pt
+}
+.cell{
+	top:161pt;left:208pt;width:107.5pt
+}
+.addr{
+	top:197pt;left:65pt;width:215pt;font-size:9.9pt
+}
+.post{
+	top:215pt;left:209pt;width:86pt
+}
+.sender .sender-com{
+	width:53pt
+}
+.sender .sender-phone{width:77pt}
+.sender-lebang .sender-com{top:74pt;left:70pt}
+.sender-lebang .sender-addr{top:121pt;left:42pt}
+.sender-lebang .sender-phone{top:73pt;left:170pt;width:90pt}
+.sender-shenge .sender-com{top:87pt;left:85pt}
+.sender-shenge .sender-addr{top:143pt;left:83pt}
+.sender-shenge .sender-phone{top:159pt;left:40pt;width:90pt}
+.sender-shunfeng .sender-com{top:90pt;left:40pt}
+.sender-shunfeng .sender-addr{top:127pt;left:35pt}
+.sender-shunfeng .sender-phone{top:110pt;left:40pt;width:90pt}
+.sender-shentong .sender-com{top:76pt;left:85pt}
+.sender-shentong .sender-addr{top:147pt;left:31pt}
+.sender-shentong .sender-phone{top:171pt;left:107pt;width:100pt}
+.sender-ems .sender-com{top:58pt;left:47pt}
+.sender-ems .sender-addr{top:92pt;left:34pt}
+.sender-ems .sender-phone{top:58pt;left:157pt;width:100pt}
+.sender-debang .sender-com{top:79pt;left:120pt}
+.sender-debang .sender-addr{top:116pt;left:128pt}
+.sender-debang .sender-phone{top:97pt;left:229pt;width:100pt}
+.text .addr{width:203pt}.text .receipt{width:75pt}
+.text .cell{width:120pt}
+.text-lebang .addr{top:122pt;left:289pt}
+.text-lebang .cell{top:74pt;left:417pt}
+.text-lebang .receipt{top:75pt;left:317pt}
+.text-lebang .post{top:153pt;left:435pt}
+.text-lebang .month_clean{top:240pt;left:284pt}
+.text-shenge .addr{top:153pt;left:276pt}
+.text-shenge .cell{top:199pt;left:294pt}
+.text-shenge .receipt{top:83pt;left:327pt}
+.text-shenge .post{top:197pt;left:435pt}
+.text-shenge .month_clean{top:240pt;left:284pt}
+.text-shunfeng .addr{top:225pt;left:28pt}
+.text-shunfeng .cell{top:208pt;left:145pt}
+.text-shunfeng .receipt{top:190pt;left:187pt}
+.text-shunfeng .post{top:244pt;left:184pt}
+.text-shunfeng .month_clean{top:240pt;left:284pt}
+.text-ems .receipt{top:140pt;left:68pt;width:75pt}
+.text-ems .cell{top:137pt;left:184pt}
+.text-ems .addr{top:174pt}
+.text-ems .post{top:213pt;left:227pt}
+.text-shentong .receipt{top:71pt;left:354pt}
+.text-shentong .cell{top:173pt;left:378pt}
+.text-shentong .addr{top:145pt;left:300pt;width:225pt}
+.text-shentong .post{top:156pt;left:484pt}
+.text-lianbang .receipt{top:166pt;left:55pt}
+.text-lianbang .cell{top:182pt;left:152pt}
+.text-lianbang .addr{top:222pt;left:17pt}
+.text-lianbang .post{top:239pt;left:164pt}
+.text-debang .receipt{top:163pt;left:146pt}
+.text-debang .cell{top:183pt;left:224pt}
+.text-debang .addr{top:202pt;left:94pt}
+.text-debang .post{top:220pt;left:247pt}
+.product_text{font-size:8pt;width:300pt}
+.text-lebang .product_text{top:6pt;left:9pt}
+.text-shenge .product_text{top:61pt;left:23pt}
+.text-lianbang .product_text{top:60pt;left:368pt;width:200px}
+.text-shunfeng .product_text{top:304pt;left:251pt}
+.text-ems .product_text{top:38pt;left:60pt}
+.text-shentong .product_text{top:17pt;left:427pt}
+.text-debang .product_text{top:264pt;left:62pt}
+.text-lebang .delivery_date{top:172pt;left:206pt}
+.text-shenge .delivery_date{top:83pt;left:206pt}
+.text-lianbang .delivery_date{top:51pt;left:368pt}
+.text-shunfeng .delivery_date{top:70pt;left:352pt}
+.text-debang .delivery_date{top:278pt;left:149pt}
+@media print{.sheet-bg img,a{display:none}p{border:none}}
+@page{size:23cm 12.7cm Portrait}
