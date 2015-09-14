@@ -21,7 +21,7 @@ class indexController extends adminController {
 	}
 	
 	/**
-	 * 测试
+	 * demo
 	 */
 // 	public function index() {
 // 		echo $this->pageNo();
@@ -44,16 +44,25 @@ class indexController extends adminController {
 // // 		echo $debug->use_memory('hello');
 // 	}
 	
+	/**
+	 * demo
+	 */
 	public function hello() {
 		echo $this->pageNo();
 		echo 'hello';
 	}
 	
+	/**
+	 * demo
+	 */
 	public function cache() {
 		$userCache = InitPHP::getCacheDao('member');
 		print_r($userCache->test());
 	}
 	
+	/**
+	 * demo
+	 */
 	public function mongo() {
 		$userMongo = InitPHP::getMongoDao('member');
 		//print_r($userMongo->getMembers()) . '<br>';
@@ -62,16 +71,17 @@ class indexController extends adminController {
 		var_dump($userMongo->insert(array('subscribe'=>1, 'create_time'=>time())));
 	}
 	
+	/**
+	 * demo
+	 */
 	public function rpc() {
 		$ret = InitPHP::getRemoteService("user", "getUser", array(), 'admin');
 		print_r($ret);
 	}
 	
-	public function helper() {
-		InitPHP::getHelper('view');
-		echo getOne();
-	}
-	
+	/**
+	 * demo
+	 */
 	public function unittest() {
 		InitPHP::getUtils('unittesting')->run('user');
 	}
