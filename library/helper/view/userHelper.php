@@ -14,7 +14,7 @@ function lists_view($filter, $email_value, $begin_value, $rows, $page_html) {
 	
 	//超链接按钮
 	$buttons = array(
-		matrix_a_btn(array('href'=>base_url('user/add'), 'text'=>'新建用户'))
+		matrix_a_btn(array('href'=>base_url('user/add'), 'text'=>'添加用户'))
 	);
 	
 	//过滤条件
@@ -37,18 +37,18 @@ function lists_view($filter, $email_value, $begin_value, $rows, $page_html) {
 	//设置表头 排序的icon可以根据逻辑做修改 这里是写死的
 	$ths = array(
 		table_th(form_checkbox(), '5%'),
-		table_th(form_a(array('href'=>'#'), '<i class="icon-sort"></i>邮箱'), '35%'),
-		table_th(form_a(array('href'=>'#'), '<i class="icon-caret-down"></i>角色'), '20%'),
+		table_th(table_a('#', '<i class="icon-sort"></i>邮箱'), '35%'),
+		table_th(table_a('#', '<i class="icon-caret-down"></i>角色'), '20%'),
 		table_th('上次登录时间', '20%'),
 		table_th('操作', '20%')
 	);
 	$trs = array();
 	foreach ($rows as $key=>$row) {
-		$a1 = form_a(array('class'=>'mr5', 'href'=>base_url('user/add?id='.$row['id'])), '查看');
+		$a1 = table_a(base_url('user/add', array('id'=>$row['id'])), '查看');
 		$attrs = array(
 			'data-id'=>$row['id'],
 			'data-name'=>"xx",
-			'class'=>'mr5',
+			'class' => 'warning',
 			'data-href'=>base_url('user/add'),
 			'data-prompt'=>'您确定这个订单吗？'
 		);
@@ -70,15 +70,32 @@ function lists_view($filter, $email_value, $begin_value, $rows, $page_html) {
 /**
  * add添加页面的view
  */
-function add_view($form_token) {
+function add_view($user=array()) {
 	$forms = array();
 	
-	$pwd = form_password(array('class'=>'span4', 'name'=>'pwd', 'id'=>'pwd'));
+	$name_value = form_set_defaultvalue($user, 'name');
+	$name_attr = array(
+		'class'=>'span4',
+		'name'=>'name'
+	);
+	$name = form_input($name_attr);
+	$name = form_format_widget('用户', $name, true);
+	
+	$pwd_attr = array(
+		'class'=>'span4',
+		'name'=>'pwd',
+		'id'=>'pwd'
+	);
+	$pwd = form_password($pwd_attr);
 	$pwd = form_format_widget('密码', $pwd, true, '不能输入纯数字');
 	
-	$repwd = form_password(array(
-			'class'=>'span4', 'name'=>'repwd', 
-			'data-confirm-to'=>'pwd', 'data-confirm-to-message'=>'密码确认不正确'));
+	$repwd_attr = array(
+		'class'=>'span4',
+		'name'=>'repwd', 
+		'data-confirm-to'=>'pwd',
+		'data-confirm-to-message'=>'密码确认不正确'
+	);
+	$repwd = form_password($repwd_attr);
 	$repwd = form_format_widget('确认密码', $repwd);
 	
 	/*
@@ -95,7 +112,7 @@ function add_view($form_token) {
 	$checkboxs[] = matrix_checkbox_inline(array('name'=>'join[]'), 1, '软妹子');
 	$checkboxs[] = matrix_checkbox_inline(array('name'=>'join[]'), 2, '红宝石', true);
 	$checkboxs[] = matrix_checkbox_inline(array('name'=>'join[]'), 3, '做一个春梦');
-	$checkboxs = implode('', $checkboxs);
+	$checkboxs = form_implode($checkboxs);
 	$checkboxs = form_format_input_widget('搭配', $checkboxs);
 	
 	/*
@@ -128,8 +145,8 @@ function add_view($form_token) {
 	$widget2 = array($ueditor);
 	$forms[] = form_detail_container($widget2, '编辑器');
 	
-	$forms[] = form_actions(form_success_button());//提交按钮
-	return implode('', $forms);
+	$forms[] = form_detail_actions();//提交按钮
+	return form_implode($forms);
 }
 
 /**

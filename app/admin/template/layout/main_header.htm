@@ -27,6 +27,7 @@
     <!-- 检测CSS3属性支持的插件，让IE8等浏览器支持HTML5的标签-->
     <script type="text/javascript" src="<!--{echo script_url('libs/modernizr/modernizr.js')}-->"></script>
     <script type="text/javascript" src="<!--{echo script_url('config.js')}-->"></script>
+    <script type="text/javascript" src="<!--{echo script_url('libs/jquery/jquery.js')}-->"></script>
     <!--{if (!empty($page_scripts))}-->
     <!--{foreach ($page_scripts as $key => $value)}-->
     <!--{echo $value}-->
@@ -44,9 +45,11 @@
       <ul class="nav">
         <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon-user"></i>  <span class="text">欢迎<!--{echo $page_account}--></span><b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#"><i class="icon-user"></i> 我的信息</a></li>
+            <li><a href="<!--{echo base_url('system/admininfo')}-->"><i class="icon-info-sign mr5"></i>我的信息</a></li>
             <li class="divider"></li>
-            <li><a href="<!--{echo base_url('public/logout')}-->"><i class="icon-key"></i> 退出登录</a></li>
+            <li><a href="<!--{echo base_url('system/adminpwd')}-->"><i class="icon-check mr5"></i>修改密码</a></li>
+            <li class="divider"></li>
+            <li><a href="<!--{echo base_url('public/logout')}-->"><i class="icon-key mr5"></i>退出登录</a></li>
           </ul>
         </li>
         <li><a href="<!--{echo base_url('public/logout')}-->"><i class="icon-share-alt"></i> <span class="text">退出登录</span></a></li>

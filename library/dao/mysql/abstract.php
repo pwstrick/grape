@@ -16,7 +16,7 @@ class abstractMysqlDao extends Dao {
 	/**
 	 * 添加数据
 	 * @param array $row
-	 * @return mixed 返回主键信息
+	 * @return mixed 返回主键信息 错误返回0
 	 */
 	public function insert($row) {
 		return $this->db->insert($row, $this->table_name);
@@ -25,7 +25,7 @@ class abstractMysqlDao extends Dao {
 	/**
 	 * 获取一条数据，直接编写sql语句
 	 * @param string $sql
-	 * @return array
+	 * @return array|false
 	 */
 	public function getRowSQL($sql) {
 		return $this->db->get_one_sql($sql);
@@ -34,7 +34,7 @@ class abstractMysqlDao extends Dao {
 	/**
 	 * 获取多条数据，直接编写sql语句
 	 * @param string $sql
-	 * @return array
+	 * @return array 错误返回false
 	 */
 	public function getRowsSQL($sql) {
 		return $this->db->get_all_sql($sql);
@@ -56,7 +56,7 @@ class abstractMysqlDao extends Dao {
 	 * @param array $where
 	 * @param array $order
 	 * @param string $field
-	 * @return array
+	 * @return array 错误返回false
 	 */
 	public function getRow($where = array(), $order = null, $field = '*') {
 		return $this->db->get_one_by_field($where, $this->table_name, $order, $field);
@@ -69,7 +69,7 @@ class abstractMysqlDao extends Dao {
 	 * @param int $size
 	 * @param int $offset
 	 * @param string $field
-	 * @return array
+	 * @return array 错误返回false
 	 */
 	public function getRows($where = array(), $order = null, $size = null, $offset = 0, $field = '*') {
 		return $this->db->get_all($this->table_name, $size, $offset, $where, $order, $field, false);
@@ -77,7 +77,7 @@ class abstractMysqlDao extends Dao {
 	
 	/**
 	 * 根据主键获取一条信息
-	 * @param mixed $id
+	 * @param mixed $id 错误返回false
 	 */
 	public function getRowById($id) {
 		return $this->db->get_one($id, $this->table_name, $this->primary_key);
@@ -90,7 +90,7 @@ class abstractMysqlDao extends Dao {
 	 * @param int $page
 	 * @param int $size
 	 * @param string $field
-	 * @return array (0=>数据,1=>数量)
+	 * @return array (0=>数据,1=>数量) 错误返回false
 	 */
 	public function getRowsLimitByPage($where = array(), $order = null, $page = 1, $size = 10, $field = '*') {
 		return $this->db->get_all($this->table_name, $size, ($page - 1) * $size, $where, $order, $field);
@@ -100,7 +100,7 @@ class abstractMysqlDao extends Dao {
 	 * 根据多个主键获取信息
 	 * @param array $ids 主键数组
 	 * @param string $order 排序
-	 * @return array
+	 * @return array 错误返回false
 	 */
 	public function getRowsByIds($ids, $order = null, $field='*') {
 		$where = array(
@@ -121,6 +121,17 @@ class abstractMysqlDao extends Dao {
 	
 	public function updateById($row, $id) {
 		return $this->db->update($id, $row, $this->table_name, $this->primary_key);
+	}
+	
+	/**
+	 * 直接更新status状态
+	 * @param int $id
+	 */
+	public function updateStatusById($id, $status) {
+		$row = array(
+			'status' => $status	
+		);
+		return $this->updateById($row, $id);
 	}
 	
 	public function deleteById($id) {

@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-09-13 19:12:19, compiled from D:\htdocs\grape/app/admin/template/layout/main_header.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-10-09 18:26:16, compiled from D:\htdocs\grape/app/admin/template/layout/main_header.htm */ ?>
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -28,6 +28,7 @@
     <!-- 检测CSS3属性支持的插件，让IE8等浏览器支持HTML5的标签-->
     <script type="text/javascript" src="<?php echo script_url('libs/modernizr/modernizr.js') ?>"></script>
     <script type="text/javascript" src="<?php echo script_url('config.js') ?>"></script>
+    <script type="text/javascript" src="<?php echo script_url('libs/jquery/jquery.js') ?>"></script>
     <?php if  (!empty($page_scripts)) { ?>
     <?php foreach  ($page_scripts as $key => $value) { ?>
     <?php echo $value ?>
@@ -45,9 +46,11 @@
       <ul class="nav">
         <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon-user"></i>  <span class="text">欢迎<?php echo $page_account ?></span><b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#"><i class="icon-user"></i> 我的信息</a></li>
+            <li><a href="<?php echo base_url('system/admininfo') ?>"><i class="icon-info-sign mr5"></i>我的信息</a></li>
             <li class="divider"></li>
-            <li><a href="<?php echo base_url('public/logout') ?>"><i class="icon-key"></i> 退出登录</a></li>
+            <li><a href="<?php echo base_url('system/adminpwd') ?>"><i class="icon-check mr5"></i>修改密码</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo base_url('public/logout') ?>"><i class="icon-key mr5"></i>退出登录</a></li>
           </ul>
         </li>
         <li><a href="<?php echo base_url('public/logout') ?>"><i class="icon-share-alt"></i> <span class="text">退出登录</span></a></li>

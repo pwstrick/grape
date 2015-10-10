@@ -40,7 +40,6 @@ class publicController extends adminController {
 		//保存到session中
 		$session = $this->getUtil('session');
 		$session->set(constHelper::ADMIN_SESSION, $account);
-		
 		$this->ajaxSuccessOutput('登录成功');
 	}
 	

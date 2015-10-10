@@ -21,4 +21,33 @@ class userSysMysqlDao extends abstractMysqlDao {
 		);
 		return $this->getRow($where);
 	}
+	
+	/**
+	 * 根据status获取分组列表
+	 * @param int $status
+	 * @author pwstrick
+	 */
+	public function getListByStatus($status=constHelper::STATUS_NORMAL) {
+		$where = array(
+			'status' => $status
+		);
+		return $this->getRows($where);
+	}
+	
+	/**
+	 * 更新密码
+	 * @param string $new
+	 * @param string $old
+	 * @param int $id 
+	 */
+	public function updatePwd($new, $old, $id) {
+		$where = array(
+			'pwd' => $old,
+			'id' => $id
+		);
+		$row = array(
+			'pwd' => $new	
+		);
+		return $this->update($row, $where);
+	}
 }

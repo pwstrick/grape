@@ -13,7 +13,7 @@ body {
 	overflow-x: hidden;
 	margin-top: -10px; font-family: 'Open Sans', sans-serif; font-size:12px; color:#666;
 }
-a{color:#666;}
+a{color:#0088cc;}
 a:hover, a:focus {
 	text-decoration: none; color:#28b779;
 }
@@ -55,16 +55,14 @@ hr{ border-top-color:#dadada;margin-top:10px}
 	z-index: -9;
 }
 #header h1 {
-	background: url("../images/logo-white.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/logo-org.png") no-repeat scroll 0 0 transparent;
 	height: 31px;
 	left: 20px;
 	line-height: 600px;
 	overflow: hidden;
 	position: relative;
-	top: 10px;
+	top: 26px;
 	width: 191px;
-	margin: 0;
-	padding:10px 0;
 }
 #header h1 a {
 	display: block;
@@ -106,14 +104,14 @@ hr{ border-top-color:#dadada;margin-top:10px}
 #user-nav > ul {
 	margin: 0;
 	padding: 0;
-	list-style: none; border-right: 1px solid #6a7176;border-left: 1px solid #000;
+	list-style: none; border-right: 1px solid #2e363f;border-left: 1px solid #000;
 }
 #user-nav > ul > li {
 	float: left;
 	list-style-type: none;
 	margin: 0;
 	position: relative;
-	padding: 0; border-left: 1px solid #6a7176; border-right: 1px solid #000;
+	padding: 0; border-left: 1px solid #2e363f; border-right: 1px solid #000;
 }
 #user-nav > ul > li > a {
 	padding:9px 10px;
@@ -125,12 +123,11 @@ hr{ border-top-color:#dadada;margin-top:10px}
 	margin-left:5px;
 }
 #user-nav > ul > li > a:hover, #user-nav > ul > li.open > a {
-	color: #ffffff;  background:#7b8389;
+	color: #ffffff;  background:#000;
 }
 #user-nav > ul > li > a > i, #sidebar li a i {
 	opacity: .5;
 	margin-top: 2px;
-	font-size:14px;
 }
 #user-nav > ul > li > a:hover > i, #user-nav > ul > li.open > a > i {
 	opacity: 1;
@@ -168,7 +165,7 @@ hr{ border-top-color:#dadada;margin-top:10px}
 #sidebar > ul > li > a {
 	padding: 10px 0 10px 15px;
 	display: block;
-	color: #cdcdcd;
+	color: #939da8;
 }
 #sidebar > ul > li > a > i {
 	margin-right: 10px;
@@ -1077,6 +1074,12 @@ div.dataTables_wrapper .ui-widget-header {
 	word-wrap: break-word;
 	word-break:break-all; 
 }
+.table td a.warning{
+	color:#faa732;
+}
+.table td a.warning:hover, .table td a.warning:focus {
+	color:#f89406;
+}
 .table td.left, .table td.menu-expand{
 	text-align: left;
 }
@@ -1679,7 +1682,7 @@ div.dataTables_wrapper .ui-widget-header {
 .must_label{color: #f74d4d;margin-right: 5px;vertical-align: middle;}
 .mr5{margin-right:5px}.mr20{margin-right:20px}
 .ml5{margin-left:5px}
-.mb10{margin-bottom: 10px;}.mb20{margin-bottom: 20px;}
+.mb5{margin-bottom:5px}.mb10{margin-bottom:10px}.mb20{margin-bottom:20px}
 .mt10{margin-top: 10px;}
 .tr{text-align: right;}.tl{text-align: left;}
 .ovh{overflow: hidden;}

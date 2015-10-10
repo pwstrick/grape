@@ -16,7 +16,7 @@ class indexController extends adminController {
 	 * @author pwstrick
 	 */
 	public function index() {
-		$this->mainTemplate('控制面板');
+		$this->mainTemplate(false, '控制面板');
 		$this->view->display('index/index');
 	}
 	

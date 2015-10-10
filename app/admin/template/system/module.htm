@@ -1,0 +1,81 @@
+<style>
+	.menu-expand i{
+		width:10px;
+		display:inline-block
+	}
+</style>
+<div>
+	<a href="<!--{echo base_url('system/moduleadd')}-->" class="mr5 btn btn-primary">添加模块</a>
+</div>
+<div class="widget-box">
+	<div class="widget-content">
+	<button class="btn btn-info mb20" name="btnSort" data-url="<!--{echo base_url('system/ajaxsort')}-->">排序</button>
+	<table class="table table-bordered table-striped table-hover" id="menu">
+		<thead>
+			<tr>
+				<th width="20%">排序</th>
+				<th width="20%">控制器/功能</th>
+				<th width="5%">icon</th>
+				<th width="25%">模块名</th>
+				<th width="10%">是否是菜单</th>
+				<th width="20%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!--{foreach($modules as $module)}-->
+		<tr data-row="<!--{echo $module['number']}-->" data-depth="<!--{echo $module['depth']}-->">
+			<td class="menu-expand">
+				<!--{if($module['caret']===true)}-->
+				<i class="icon-caret-down"></i>
+				<!--{else}-->
+				<i class="icon-caret-right vbh"></i>
+				<!--{/if}-->
+				<input type="text" class="span3" name="sort" data-id="<!--{echo $module['module_id']}-->" value="<!--{echo $module['sort']}-->" data-type="module"/>
+			</td>
+			<td><!--{echo $module['module_key'].'/'.$module['action'].'('.$module['children_count'].')'}--></td>
+			<td>
+				<!--{if(!empty($module['icon']))}-->
+				<i class="icon-<!--{echo $module['icon']}-->"></i>
+				<!--{/if}-->
+			</td>
+			<td class="left"><!--{echo $module['module_name']}--></td>
+			<td></td>
+			<td>
+				<a class="mr5" href="<!--{echo base_url('system/moduleactionadd?id='.$module['module_id'])}-->">添加功能</a>
+				<a class="mr5" href="<!--{echo base_url('system/moduleadd?id='.$module['module_id'])}-->">修改</a>
+				<a class="warning" data-reload="true" data-id="<!--{echo $module['module_id']}-->" data-href="<!--{echo base_url('system/moduledel')}-->" data-type="del" href="javascript:void(0)" data-prompt="您确定删除这个模块吗？">移除</a>
+			</td>
+		</tr>
+		<!--{if(!empty($module['children']))}-->
+		<!--{foreach($module['children'] as $child)}-->
+		<tr data-row="<!--{echo $child['number']}-->" data-depth="<!--{echo $child['depth']}-->">
+			<td class="menu-expand"><i class="ml2 vbh"></i><input type="text" class="span3" name="sort" data-id="<!--{echo $child['action_id']}-->" value="<!--{echo $child['sort']}-->" data-type="action"/></td>
+			<td><!--{echo $child['action_key']}--></td>
+			<td></td>
+			<td class="left"><!--{echo $child['action_name']}--></td>
+			<td>
+				<!--{if($child['action_menu'] == 1)}-->√<!--{/if}-->
+			</td>
+			<td>
+				<a class="mr5" href="<!--{echo base_url('system/moduleactionadd', array('id'=>$module['module_id'],'aid'=>$child['action_id']))}-->">修改</a>
+				<a class="warning" data-reload="true" data-aid="<!--{echo $child['action_id']}-->" data-href="<!--{echo base_url('system/moduleactiondel')}-->" data-type="del" href="javascript:void(0)" data-prompt="您确定删除这个功能吗？">移除此功能</a>
+			</td>
+		</tr>
+		<!--{/foreach}-->
+		<!--{/if}-->
+		<!--{/foreach}-->
+			</tbody>
+			<thead>
+				<tr>
+					<th>排序</th>
+					<th>控制器/功能</th>
+					<th>icon</th>
+					<th>模块名</th>
+					<th>是否是菜单</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+		</table>
+		<button class="btn btn-info mb20" name="btnSort" data-url="<!--{echo base_url('system/ajaxsort')}-->">排序</button>
+	</div>
+</div>

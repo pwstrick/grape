@@ -6,6 +6,12 @@ class constHelper {
 	const ADMIN_SESSION = 'admin_user'; //后台用户session名
 	
 	/**
+	 * 通用状态
+	 */
+	const STATUS_NORMAL = 1;
+	const STATUS_DEL = 0;//删除
+	
+	/**
 	 * ajax请求状态码
 	 */
 	const AJAX_SUCCESS = 1;

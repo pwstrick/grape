@@ -20,7 +20,7 @@ function format_breadcrumbs($breadcrumbs) {
 			'url' => $breadcrumb[0], 
 			'name' => $breadcrumb[1]
 		);
-		$row['class'] = ($index == $length-1) ? 'current' : 'tip-bottom';
+		$row['css'] = ($index == $length-1) ? 'current' : 'tip-bottom';
 		$rows[] = $row;
 	}
 	return $rows;
@@ -56,6 +56,10 @@ function query_form($inputs=array(), $buttons=array(), $btn_groups=array()) {
 		$html .= '</div>';
 	}
 
+	if(empty($inputs) && empty($btn_groups)) {
+		return $html;
+	}
+	
 	$html .= '<form method="get">';
 	$html .= '<article class="widget-box">';
 	$html .= '<section class="widget-content">';
@@ -96,11 +100,18 @@ function query_form($inputs=array(), $buttons=array(), $btn_groups=array()) {
  * @param string $text 文本内容
  * @param string $width 宽度
  * @param string $style style属性集合
+ * @param array $extra_attrs 其他额外的参数
  */
-function table_th($text, $width, $style='') {
-	$th = array('text'=>$text, 'width'=>$width);
+function table_th($text, $width=null, $style='', $extra_attrs=array()) {
+	$th = array('text'=>$text);
+	if($width !== null) {
+		$th['width'] = $width;
+	}
 	if(!empty($style)) {
 		$th['style'] = $style;
+	}
+	if(!empty($extra_attrs)) {
+		$th = array_merge($th, $extra_attrs);
 	}
 	return $th;
 }
@@ -220,6 +231,33 @@ function matrix_select($select, $is_container=true, $class='span2') {
 }
 
 /**
+ * 详情页中matrix下拉框 会有验证等特殊属性
+ * @param array $datas 数据数组
+ * @param array $attrs 属性数组
+ * @param string $selected 要选中的内容
+ * @param array $first 下拉框中第一个选择设置
+ * @return string
+ */
+function matrix_select_attrs($datas, $attrs, $selected='', $first=array()) {
+	if(empty($datas) )
+		return '';
+
+	if(!empty($first) && is_array($datas))
+		$datas = $first + $datas;
+
+	$name = '';
+	$join = array();
+	foreach ($attrs as $key => $value) {
+		if($key == 'name') {
+			$name = $value;
+		}else {
+			$join[] = sprintf('%s="%s"', $key, $value);
+		}
+	}
+	return form_dropdown($name, $datas, $selected, implode(' ', $join));
+}
+
+/**
  * matrix通用组件样式
  * @return string
  */
@@ -301,6 +339,10 @@ function matrix_img($data, $asyn=true) {
  * @param array $form_attributes form表单属性
  */
 function matrix_form($form_attributes=array()) {
+	if(!isset($form_attributes['id'])) {
+		//默认给个ID值
+		$form_attributes['id'] = 'form'.rand(0, 9999);
+	}
 	$form_attributes['class'] = 'form-horizontal validate';
 	$form_attributes['data-type'] = 'form';
 	$form_attributes['method'] = 'post';
@@ -372,6 +414,14 @@ function matrix_radio_inline($attrs, $value, $text, $checked=false) {
 }
 /*********************************详情控件*****************************************/
 /**
+ * forms数组拼接
+ * @param array $forms
+ */
+function form_implode($forms) {
+	return implode('', $forms);
+}
+
+/**
  * 详情form中form-actions样式
  * @param mixed $contents
  * @param $id_prompt 提示信息的<div>的ID名
@@ -384,11 +434,18 @@ function form_actions($contents, $id_prompt = 'prompt') {
 	}else {
 		$html .= $contents;
 	}
-	
-	//添加token验证按钮
+
 	$html .= form_fieldset_close();
 	return $html;
 	//return $html . '<div class="alert alert-error hide" id="'.$id_prompt.'"></div>';
+}
+
+/**
+ * 表单页面将会有一个提交和返回按钮
+ */
+function form_detail_actions() {
+	$btn = form_success_button() . a_edit_go_back();//提交与返回按钮
+	return form_actions($btn);
 }
 
 /**
@@ -529,25 +586,6 @@ function form_detail($inputs) {
 }
 
 /**
- * 下拉框展示
- * @param array $datas 数据数组
- * @param string $name 单选框name属性
- * @param string $css 给下拉框外面包裹一个div的属性
- * @param string $selected 要选中的内容
- * @param array $first 下拉框中第一个选择设置
- * @return string
- */
-function detail_form_select($datas, $name, $css='span2', $selected='', $first=array()) {
-	if(empty($datas) && empty($first))
-		return '';
-
-	if(!empty($first) && is_array($datas))
-		$datas = $first + $datas;
-
-	return select_query_form(form_dropdown($name, $datas, $selected), $css);
-}
-
-/**
  * 快速设置输入框属性
  * @param string $name name属性
  * @param string $class class属性
@@ -605,6 +643,16 @@ function form_script_format($url) {
  */
 function form_my97_script() {
 	return form_script(script_url('libs/My97DatePicker/WdatePicker.js'));
+}
+
+/**
+ * 设置控件默认值
+ * @param array $row
+ * @param string $name
+ * @param string $default
+ */
+function form_set_defaultvalue($row, $name, $default='') {
+	return empty($row[$name]) ? $default : $row[$name];
 }
 
 /*********************************第三方插件*****************************************/

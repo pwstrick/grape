@@ -54,7 +54,8 @@ class exceptionInit extends Exception{
 			$msg = '系统繁忙，请稍后再试';
 		}
 		if (self::is_ajax()) {
-			$arr = array('status' => 0, 'message' => $msg, 'data' => array('code' => $e->code));
+			//此处将返回的关键字与我当前的JS代码对应
+			$arr = array('result' => 0, 'msg' => $msg, 'data' => array('code' => $e->code));
 			echo json_encode($arr);
 		} else {
 			//如果debug关闭，则不显示debug错误信息

@@ -1,13 +1,33 @@
 <?php
 
 /**
+ * 返回上一页
+ */
+function redirect_last_url() {
+	return getenv('HTTP_REFERER');
+}
+
+/**
  * 获取带基础URL路径的地址
  * @param string $url
+ * @param array $params 参数数组
  */
-function base_url($url='') {
+function base_url($url='', $params=array()) {
 	$config = InitPHP::getConfig();
 	if(empty($url)) {
 		return rtrim($config['url'], '/');
+	}
+	if(!empty($params)) {
+		foreach ($params as $key=>$value) {
+			$params[] = $key.'='.$value;
+			unset($params[$key]);
+		}
+		$params = implode('&', $params);
+		if(strpos($url, '?') !== false) {
+			$url .= '&'.$params;
+		}else {
+			$url .= '?'.$params;
+		}
 	}
 	return rtrim($config['url'], '/') . '/' . $url;
 }

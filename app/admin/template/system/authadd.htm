@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    $(function () {
+    	var ajax = $('#hf_ajax').val();
+    	var id = $('#hf_id').val();
+    	var token = $('#init_token').val();
+    	$('table').delegate('input:radio', 'change', function () {
+            var $this = $(this);
+            var attrs = $this.data();
+            var value = $this.val();
+            attrs['value'] = value;
+            attrs['id'] = id;
+            attrs['init_token'] = token;
+            var $next = $this.closest('td').next();
+            $next.html('<span class="in-progress">正在处理中</span>');
+            $.post(ajax, attrs, function (data) {
+            	$next.html('<span class="done">设置成功</span>');
+            });
+        });
+    });
+</script>
+<style>
+	.menu-expand i{
+		width:10px;
+		display:inline-block
+	}
+</style>
+<input type="hidden" id="hf_ajax" value="<!--{echo $ajax}-->"/>
+<input type="hidden" id="hf_id" value="<!--{echo $id}-->"/>
+
+<div class="widget-box">
+	<div class="widget-content">
+	<table class="table table-bordered table-striped table-hover" id="menu">
+		<tbody>
+		<!--{foreach($modules as $module)}-->
+		<tr data-row="<!--{echo $module['number']}-->" data-depth="<!--{echo $module['depth']}-->">
+			<td class="menu-expand" colspan="3">
+				<!--{if($module['caret']===true)}-->
+				<i class="icon-caret-down"></i>
+				<!--{else}-->
+				<i class="icon-caret-right vbh"></i>
+				<!--{/if}-->
+				<!--{echo $module['module_name']}-->
+			</td>
+		</tr>
+		<!--{if(!empty($module['children']))}-->
+		<!--{foreach($module['children'] as $child)}-->
+		<tr data-row="<!--{echo $child['number']}-->" data-depth="<!--{echo $child['depth']}-->">
+			<td class="menu-expand" width="60%"><!--{echo $child['action_name']}--></td>
+			<td width="20%">
+			<!--{if($child['action_checked'])}-->
+				<label class="dib"><input checked type="radio" value="1" name="auth<!--{echo $child['action_id']}-->" data-aid="<!--{echo $child['action_id']}-->">允许</label>
+				<label class="dib"><input type="radio" value="0" name="auth<!--{echo $child['action_id']}-->" data-aid="<!--{echo $child['action_id']}-->">禁止</label>
+			<!--{else}-->
+				<label class="dib"><input type="radio" value="1" name="auth<!--{echo $child['action_id']}-->" data-aid="<!--{echo $child['action_id']}-->">允许</label>
+				<label class="dib"><input checked type="radio" value="0" name="auth<!--{echo $child['action_id']}-->" data-aid="<!--{echo $child['action_id']}-->">禁止</label>
+			<!--{/if}-->
+			</td>
+			<td class="taskStatus" width="20%"></td>
+		</tr>
+		<!--{/foreach}-->
+		<!--{/if}-->
+		<!--{/foreach}-->
+		</tbody>
+	</table>
+	</div>
+</div>

@@ -2,8 +2,10 @@ define([
 	'backbone',
 	'viewUtil',
 	'comUtil',
-	'mustache'
-], function (Backbone, viewUtil, comUtil, Mustache) {
+	'mustache',
+	'modelUtil',
+	'dialogView'
+], function (Backbone, viewUtil, comUtil, Mustache, modelUtil, dialogView) {
 	var menu = Backbone.View.extend({
 		el: $('body'),
 		initialize: function() {
@@ -132,11 +134,19 @@ define([
 				var $btn = $(this);
 				$btn.click(function() {
 					var sorts = [];
+					var others = [];
 					$('#menu').find(':input[name=sort]').each(function() {
+						var datas = $(this).data();
 						var value = ~~$(this).val();
 						var id = +$(this).data('id');
+						var params = [];
+						$.each(datas, function(key, value) {
+							params.push(key+'='+value);
+						});
+						others.push(params.join('&'));
 						sorts.push([id, value]);
 					});
+
 					var fn = function(json) {
 						if(comUtil.isJsonSuccess(json)) {
 							//成功则刷新页面
@@ -144,9 +154,15 @@ define([
 						}
 						viewUtil.setError(json.msg, {'id':'prompt'+index, 'container':$btn, 'direction':'next'});
 					}
-					_model.post($(this).data('url'), $(this), {'orders[]':sorts}, fn);
+					_model.post($(this).data('url'), $(this), {'orders[]':sorts, 'others[]':others}, fn);
 				});
 			});
+		},
+		tableDeleteBtn: function() {//通用删除特效
+			if($('table.table').length != 0) {
+				//列表页面删除操作
+				modelUtil.listDelPost($('table.table>tbody>tr>td'), dialogView);
+			}
 		}
 	});
 	return menu;

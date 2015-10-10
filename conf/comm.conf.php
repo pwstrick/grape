@@ -170,15 +170,15 @@ $InitPHP_conf['mongo']['default']['server']     = '127.0.0.1';
 $InitPHP_conf['mongo']['default']['port']       = '27017';
 $InitPHP_conf['mongo']['default']['option']     = array('connect' => true);
 $InitPHP_conf['mongo']['default']['db_name']    = 'baiaimama';
-$InitPHP_conf['mongo']['default']['username']   = '';
-$InitPHP_conf['mongo']['default']['password']   = '';
+$InitPHP_conf['mongo']['default']['username']   = 'root';
+$InitPHP_conf['mongo']['default']['password']   = '123456';
 //统计配置
 $InitPHP_conf['mongo']['bi']['server']     = '127.0.0.1';
 $InitPHP_conf['mongo']['bi']['port']       = '27017';
 $InitPHP_conf['mongo']['bi']['option']     = array('connect' => true);
 $InitPHP_conf['mongo']['bi']['db_name']    = 'bi';
-$InitPHP_conf['mongo']['bi']['username']   = '';
-$InitPHP_conf['mongo']['bi']['password']   = '';
+$InitPHP_conf['mongo']['bi']['username']   = 'root';
+$InitPHP_conf['mongo']['bi']['password']   = '123456';
 
 /**
  * Redis配置，如果您使用了redis，则需要配置

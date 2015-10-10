@@ -1,2 +1,2 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-09-13 19:12:19, compiled from D:\htdocs\grape/app/admin/template/com/form.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-10-09 18:22:51, compiled from D:\htdocs\grape/app/admin/template/com/form.htm */ ?>
 <?php echo $form ?>

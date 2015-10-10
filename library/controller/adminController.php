@@ -25,14 +25,41 @@ class adminController extends Controller {
 				$this->controller->ajax_return(constHelper::AJAX_REDIRECT, '请先登录');
 			}
 		}else {
+			//载入控件编辑函数
+			InitPHP::getHelper('admin');
+			
 			//普通页面访问 就只做跳转
 			if(empty($this->user()) && $this->_checkLogin()) {
 				$this->controller->redirect(base_url('public/login'));
 			}
 			//TODO 做权限验证
-			//载入控件编辑函数
-			InitPHP::getHelper('admin');
+			if($this->_filterAuth() && !$this->_checkAuth()) {
+				$this->comError('您的权限不足，不能访问当前页面');
+			}
 		}
+	}
+	
+	/**
+	 * 获取变量
+	 */
+	public function getActionList() {
+		return $this->initphp_list;
+	}
+	
+	private function _enumCheck($enum) {
+		if(!isset($enum[$this->controller_name])) {
+			return true;
+		}
+		return !in_array($this->action_name, $enum[$this->controller_name]);
+	}
+	
+	/**
+	 * 排除不需要权限判断的页面
+	 * @return boolean true：需要判断
+	 */
+	private function _filterAuth() {
+		$enum = enumHelper::$no_auth_url;
+		return $this->_enumCheck($enum);
 	}
 	
 	/**
@@ -41,10 +68,7 @@ class adminController extends Controller {
 	 */
 	private function _checkLogin() {
 		$enum = enumHelper::$no_login_url;
-		if(!isset($enum[$this->controller_name])) {
-			return true;
-		}
-		return !in_array($this->action_name, $enum[$this->controller_name]);
+		return $this->_enumCheck($enum);
 	}
 	
 	/**
@@ -53,10 +77,7 @@ class adminController extends Controller {
 	 */
 	private function _filterToken() {
 		$enum = enumHelper::$no_token_url;
-		if(!isset($enum[$this->controller_name])) {
-			return true;
-		}
-		return !in_array($this->action_name, $enum[$this->controller_name]);
+		return $this->_enumCheck($enum);
 	}
 	
 	/**
@@ -65,14 +86,18 @@ class adminController extends Controller {
      * @param string $attr
      * @return mixed
      */
-    protected function user($attr = NULL) {
+    protected function user($attr = '') {
        	$session = $this->getUtil('session'); 
 		$user = $session->get(constHelper::ADMIN_SESSION);
 
-        if (NULL != $attr && $attr) {
+        if (!empty($attr)) {
             return isset($user[$attr]) ? $user[$attr] : '';
         }
         return $user;
+    }
+    
+    protected function userID() {
+    	return (int)$this->user('id');
     }
 	
     /**
@@ -102,7 +127,7 @@ class adminController extends Controller {
 	protected function p($key, $isfilter=true, $type=null) {
 		return $this->controller->get_gp($key, $type, $isfilter);
 	}
-	
+
 	/**
 	 * 不需要登录的模版设置
 	 * @param string $script
@@ -116,21 +141,203 @@ class adminController extends Controller {
 	}
 	
 	/**
+	 * 判断当前页面是否可以访问
+	 * @return true:可以访问
+	 */
+	private function _checkAuth() {
+		$uid = $this->userID();
+		$mkey = $this->controller_name;
+		$akey = $this->action_name;
+// 		$without = array(1);//需要排除的后台账户
+// 		if(in_array($uid, $without)) {
+// 			return true;
+// 		}
+// 		if ('home' == $mkey) {
+// 			return 1;
+// 		}
+
+		$actionModel = InitPHP::getMysqlDao('action', 'mysql/sys');
+		$row = $actionModel->getOneByKey($mkey, $akey);
+		if (empty($row)) {
+			return false;
+		}
+		
+		$aid = (int)$row['action_id'];
+		if ($aid <= 0) {
+			return false;
+		}
+		
+		//用户权限
+		$aclUserModel = InitPHP::getMysqlDao('aclUser', 'mysql/sys');
+		$row = $aclUserModel->getHisAcl($uid, $aid);
+		if (!empty($row)) {
+			if (1 == $row['access']) {
+				return true;
+			}
+			if (0 == $row['access']) {
+				return false;
+			}
+		}
+		
+		//提取用户组
+		$groupUserModel = InitPHP::getMysqlDao('groupUser', 'mysql/sys');
+		$rows = $groupUserModel->getListByUid($uid);
+		$gids = array();
+		foreach ($rows as $row) {
+			$gids[$row['group_id']] = $row['group_id'];
+		}
+		
+		//用户组权限判断
+		$result = false;
+		$aclGroupModel = InitPHP::getMysqlDao('aclGroup', 'mysql/sys');
+		foreach ($gids as $gid) {
+			$row = $aclGroupModel->getGroupAcl($gid, $aid);
+			if (1 == $row['access']) {
+				$result = true;
+				break;
+			}
+		}
+		return $result;
+	}
+	
+	/**
+	 * 获取可访问的菜单
+	 */
+	private function _getMenu() {
+		//提取模块
+        $moduleModel = InitPHP::getMysqlDao('module', 'mysql/sys');
+        $rows = $moduleModel->getListByStatus();
+        $modules = array();
+        foreach ($rows as $row) {
+            $row['actions'] = array();
+            $modules[$row['module_key']] = $row;
+        }
+		
+        //提取功能
+        $actionModel = InitPHP::getMysqlDao('action', 'mysql/sys');
+        $rows = $actionModel->getMenuList();
+        $actions = array();
+        foreach ($rows as $row) {
+        	$actions[$row['action_id']] = $row;
+        }
+		
+        $uid = $this->userID();
+        //提取用户组
+        $groupUserModel = InitPHP::getMysqlDao('groupUser', 'mysql/sys');
+        $rows = $groupUserModel->getListByUid($uid);
+        $myGIDs = array();
+        foreach ($rows as $row) {
+        	$myGIDs[$row['group_id']] = $row['group_id'];
+        }
+        
+        //提取用户组权限
+        $aclGroupModel = InitPHP::getMysqlDao('aclGroup', 'mysql/sys');
+        $gAcls = array();
+        foreach ($myGIDs as $gid) {
+        	$rows = $aclGroupModel->getListByGroupId($gid);
+        	foreach ($rows as $row) {
+        		$gAcls[$gid][$row['action_id']] = $row['access'];
+        	}
+        }
+        
+        //提取用户权限
+        $aclUserModel = InitPHP::getMysqlDao('aclUser', 'mysql/sys');
+        $rows = $aclUserModel->getListByUserId($uid);
+        $userAcls = array();
+        foreach ($rows as $row) {
+        	$userAcls[$row['action_id']] = $row['access'];
+        }
+        
+        //功能清算 - 个人设置
+        $allowedActions = array();
+        foreach ($userAcls as $aid => $access) {
+        	if (0 == $access) { //清楚用户被禁止的功能
+        		if (array_key_exists($aid, $actions)) {
+        			unset($actions[$aid]);
+        		}
+        	}
+        	if (1 == $access) { //保留被允许的功能
+        		if (array_key_exists($aid, $actions)) {
+        			$allowedActions[$aid] = $actions[$aid];
+        		}
+        	}
+        }
+        
+        //功能清算 - 分组设置, 同一个功能在不同分组中权限设置. 只要有一个分组允许访问. 那么该组内的用户都有权访问.
+        foreach ($gAcls as $gid => $acls) {
+        	foreach ($acls as $aid => $access) {
+        		if (1 == $access) {
+        			if (array_key_exists($aid, $actions)) {
+        				$allowedActions[$aid] = $actions[$aid];
+        			}
+        		}
+        	}
+        }
+        
+        //组织菜单
+        foreach ($allowedActions as $aid => $row) {
+        	if (array_key_exists($row['module_key'], $modules)) {
+        		$modules[$row['module_key']]['actions'][$aid] = $row;
+        	}
+        }
+		
+        $basic = array(
+        	'index' => array(
+        		'action' => 'index',
+        		'icon' => 'home',
+        		'text' => '控制面板'
+        	)
+        );
+        //将菜单组织成可以当前结构
+        foreach ($modules as &$module) {
+        	$module['text'] = $module['module_name'];
+        	if(!empty($module['actions'])) {
+        		$module['action'] = '#';
+        		$module['sub'] = [];
+        		foreach ($module['actions'] as $action) {
+        			$module['sub'][] = array(
+        				'action' => $action['action_key'],
+        				'text' => $action['action_name'],
+        				'sort' => (int)$action['sort']
+        			);
+        		}
+        	}
+        }
+        $basic = array_merge($basic, $modules);
+        $sorts = array_column($basic, 'sort');
+        
+        array_multisort($sorts, SORT_ASC, SORT_NUMERIC, $basic); //排序
+        foreach ($basic as &$menu) {
+        	if(empty($menu['sub'])) {
+        		continue;
+        	}
+        	$sorts = array_column($menu['sub'], 'sort');
+        	array_multisort($sorts, SORT_ASC, SORT_NUMERIC, $menu['sub']); //排序
+        }
+
+        return $basic;
+	}
+	
+	/**
 	 * 主要页面模版
+	 * @param bool $is_token 是否需要设置token参数
 	 * @param string $page_title
 	 * @param array $breadcrumbs
 	 * @param string $script
 	 * @param array $ohter_link 其他的css或script链接
 	 */
-	protected function mainTemplate($page_title, $breadcrumbs=array(), $script='com', $ohter_link=array()) {
+	protected function mainTemplate($is_token, $page_title, $breadcrumbs=array(), $script='com', $ohter_link=array()) {
 		$home = array(
 			array(base_url(), '控制面板')
 		);
 		$breadcrumbs = array_merge($home, $breadcrumbs);
+		if($is_token)
+			$this->view->assign('hidden_init_token', $this->controller->get_token());//设置token 用于防御CSRF
 		$this->view->assign('breadcrumbs', format_breadcrumbs($breadcrumbs));
 		$this->view->assign('script', $script);
 		$this->view->assign('page_account', $this->user('account'));
-		$menus = enumHelper::$admin_menu;
+		//$menus = enumHelper::$admin_menu;
+		$menus = $this->_getMenu();
 		foreach ($menus as $key=>&$menu) {
 			$menu['css'] = '';
 			$menu['style'] = '';//ul的样式
@@ -143,7 +350,8 @@ class adminController extends Controller {
 			if(isset($menu['sub'])) {
 				foreach ($menu['sub'] as &$sub) {
 					$sub['css'] = '';
-					if($key == $this->controller_name && $sub['action'] == $this->action_name) {
+					if($key == $this->controller_name && 
+						($sub['action'] == $this->action_name || strpos($this->action_name, $sub['action']) === 0)) {
 						$sub['css'] = 'active';
 						$menu['style'] = 'display:block';//展开二级菜单
 					}
@@ -168,9 +376,10 @@ class adminController extends Controller {
 	 * 列表页面通用模版
 	 * @param string $page_title
 	 * @param array $breadcrumbs
+	 * @param array $ohter_link 自定义脚本或CSS链接
 	 */
 	protected function mainListTemplate($page_title, $breadcrumbs=array(), $ohter_link=array()) {
-		$this->mainTemplate($page_title, $breadcrumbs, 'list', $ohter_link);
+		$this->mainTemplate(true, $page_title, $breadcrumbs, 'list', $ohter_link);
 		$this->view->display('com/form');
 	}
 	
@@ -178,9 +387,10 @@ class adminController extends Controller {
 	 * 表单提交页面通用模版
 	 * @param string $page_title
 	 * @param array $breadcrumbs
+	 * @param array $ohter_link 自定义脚本或CSS链接
 	 */
 	protected function mainFormTemplate($page_title, $breadcrumbs=array(), $ohter_link=array()) {
-		$this->mainTemplate($page_title, $breadcrumbs, 'form', $ohter_link);
+		$this->mainTemplate(false, $page_title, $breadcrumbs, 'form', $ohter_link);
 		$this->view->display('com/form');
 	}
 	
@@ -235,7 +445,29 @@ class adminController extends Controller {
 		}
 		return $other_link;
 	}
+	
+	/**
+	 * 显示是修改还是添加
+	 * @param int $id
+	 */
+	protected function operateTitle($id) {
+		return $id > 0 ? '修改' : '添加';
+	}
 
+	/**
+	 * 通用错误页面
+	 * @param string 错误提示
+	 * @param string 错误代码 404 500等
+	 */
+	protected function comError($msg, $code='500') {
+		$this->mainTemplate($code);
+		$this->view->assign('page_title', $code);
+		$this->view->assign('code', $code);
+		$this->view->assign('message', $msg);
+		$this->view->display('com/error');
+		exit();
+	}
+	
 	/**
 	 * alternate分页样式
 	 * @param number $total 总数

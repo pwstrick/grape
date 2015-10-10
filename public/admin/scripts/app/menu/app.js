@@ -11,6 +11,7 @@ define([
 		var model = new homeModel();
 		var view = new homeView({model:model});
 		view.menuOrder();
+		view.tableDeleteBtn();
   };
   return { 
     initialize: initialize

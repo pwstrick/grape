@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-09-10 10:38:05, compiled from D:\htdocs\grape/app/admin/template/user/layer.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2015-10-07 16:36:04, compiled from D:\htdocs\grape/app/admin/template/user/layer.htm */ ?>
 <form class="form-horizontal validate" method="post" id="product_category" data-ztree-checkbox="tree" data-prompt-error="true" data-layer="true">
 	<fieldset class="control-group">
 		<div class="controls">

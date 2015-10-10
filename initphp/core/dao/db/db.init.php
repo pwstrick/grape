@@ -227,7 +227,7 @@ class dbInit extends sqlbuildInit {
 	 * @param  array  $data 参数
 	 * @param  string $table_name 表名
 	 * @param  string $id_key 主键名
-	 * @return bool
+	 * @return int 返回受影响行数
 	 */
 	public function update($id, $data, $table_name, $id_key = 'id') {
 		$id = (int) $id;
@@ -235,7 +235,8 @@ class dbInit extends sqlbuildInit {
 		$data = $this->build_update($data);
 		$where = $this->build_where(array($id_key=>$id));
 		$sql = sprintf("UPDATE %s %s %s", $table_name, $data, $where);
-		return $this->query($sql);
+		$this->query($sql);
+		return mysql_affected_rows();
 	}
 	
 	/**
@@ -244,7 +245,7 @@ class dbInit extends sqlbuildInit {
 	 * @param  array  $data 参数
 	 * @param  array  $field 字段参数
 	 * @param  string $table_name 表名
-	 * @return bool
+	 * @return int 返回受影响行数
 	 */
 	public function update_by_field($data, $field, $table_name) {
 		if (!is_array($data) || empty($data)) return false;
@@ -252,7 +253,8 @@ class dbInit extends sqlbuildInit {
 		$data = $this->build_update($data);
 		$field = $this->build_where($field);
 		$sql = sprintf("UPDATE %s %s %s", $table_name, $data, $field);
-		return $this->query($sql);
+		$this->query($sql);
+		return mysql_affected_rows();
 	}
 	
 	/**

@@ -163,6 +163,178 @@ INSERT INTO `bc_member` VALUES (1,'15821253928','pwstirkc',1441814400,NULL,1,'aT
 UNLOCK TABLES;
 
 --
+-- Table structure for table `bc_sys_acl_group`
+--
+
+DROP TABLE IF EXISTS `bc_sys_acl_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_acl_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL COMMENT '分组编号',
+  `action_id` int(10) unsigned NOT NULL COMMENT '功能编号',
+  `access` tinyint(4) DEFAULT '1' COMMENT '使用权限, 1:允许,  0:禁止',
+  `update_time` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='分组权限控制信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_acl_group`
+--
+
+LOCK TABLES `bc_sys_acl_group` WRITE;
+/*!40000 ALTER TABLE `bc_sys_acl_group` DISABLE KEYS */;
+INSERT INTO `bc_sys_acl_group` VALUES (1,2,2,1,1444294645),(2,2,1,1,1444295673),(3,2,3,1,1444296376),(4,1,1,1,1444378645),(5,1,2,1,1444378646),(6,1,3,1,1444378646),(7,1,4,1,1444378647),(8,1,5,1,1444382220);
+/*!40000 ALTER TABLE `bc_sys_acl_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bc_sys_acl_user`
+--
+
+DROP TABLE IF EXISTS `bc_sys_acl_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_acl_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '管理员编号',
+  `action_id` int(10) unsigned NOT NULL COMMENT '功能编号',
+  `access` tinyint(3) NOT NULL DEFAULT '1' COMMENT '使用权限, 1:允许, 0:禁止',
+  `update_time` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `admin_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户权限控制信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_acl_user`
+--
+
+LOCK TABLES `bc_sys_acl_user` WRITE;
+/*!40000 ALTER TABLE `bc_sys_acl_user` DISABLE KEYS */;
+INSERT INTO `bc_sys_acl_user` VALUES (1,1,1,1,1444296413),(2,1,2,1,1444296423);
+/*!40000 ALTER TABLE `bc_sys_acl_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bc_sys_action`
+--
+
+DROP TABLE IF EXISTS `bc_sys_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_action` (
+  `action_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '功能编号',
+  `module_key` varchar(45) NOT NULL COMMENT '所属模块编号',
+  `action_key` varchar(45) NOT NULL COMMENT '功能key',
+  `action_name` varchar(45) NOT NULL COMMENT '功能名称',
+  `action_menu` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否可以作为菜单, 1:可以, 0:不可以',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`action_id`),
+  KEY `module_key` (`module_key`,`action_key`),
+  KEY `module_key_1` (`module_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='模块功能信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_action`
+--
+
+LOCK TABLES `bc_sys_action` WRITE;
+/*!40000 ALTER TABLE `bc_sys_action` DISABLE KEYS */;
+INSERT INTO `bc_sys_action` VALUES (1,'system','module','模块列表',1,2,1),(2,'system','grouplist','分组列表',1,3,1),(3,'system','groupuser','分组与用户',1,4,1),(4,'system','auth','权限设置',1,5,1),(5,'system','adminuser','用户列表',1,1,1);
+/*!40000 ALTER TABLE `bc_sys_action` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bc_sys_group`
+--
+
+DROP TABLE IF EXISTS `bc_sys_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_group` (
+  `group_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户分组编号',
+  `group_name` varchar(45) NOT NULL COMMENT '用户分组名称',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '分组状态, 1:可用, 0:不可用',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户分组信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_group`
+--
+
+LOCK TABLES `bc_sys_group` WRITE;
+/*!40000 ALTER TABLE `bc_sys_group` DISABLE KEYS */;
+INSERT INTO `bc_sys_group` VALUES (1,'超级管理员组',1),(2,'运营组',1);
+/*!40000 ALTER TABLE `bc_sys_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bc_sys_group_user`
+--
+
+DROP TABLE IF EXISTS `bc_sys_group_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_group_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL COMMENT '分组编号',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户编号',
+  `status` tinyint(3) unsigned DEFAULT '1' COMMENT '分组状态, 1:有效, 0:无效',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `group_id` (`group_id`),
+  KEY `admin_id` (`user_id`),
+  KEY `group_id_2` (`group_id`,`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='分组与用户信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_group_user`
+--
+
+LOCK TABLES `bc_sys_group_user` WRITE;
+/*!40000 ALTER TABLE `bc_sys_group_user` DISABLE KEYS */;
+INSERT INTO `bc_sys_group_user` VALUES (1,2,3,1),(2,1,1,1);
+/*!40000 ALTER TABLE `bc_sys_group_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bc_sys_module`
+--
+
+DROP TABLE IF EXISTS `bc_sys_module`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bc_sys_module` (
+  `module_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '模块编号',
+  `module_key` varchar(45) NOT NULL COMMENT '模块Key',
+  `module_name` varchar(45) NOT NULL COMMENT '模块名称',
+  `sort` int(11) DEFAULT '0' COMMENT '排序',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1：正常 0：删除',
+  `action` varchar(45) DEFAULT NULL COMMENT '默认显示的页面',
+  `icon` varchar(45) DEFAULT NULL COMMENT '模块icon显示',
+  PRIMARY KEY (`module_id`),
+  KEY `module_key` (`module_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统模块信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bc_sys_module`
+--
+
+LOCK TABLES `bc_sys_module` WRITE;
+/*!40000 ALTER TABLE `bc_sys_module` DISABLE KEYS */;
+INSERT INTO `bc_sys_module` VALUES (1,'system','系统设置',2,1,'module','cog'),(2,'index','控制面板',1,1,'index','home');
+/*!40000 ALTER TABLE `bc_sys_module` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bc_sys_user`
 --
 
@@ -170,12 +342,13 @@ DROP TABLE IF EXISTS `bc_sys_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bc_sys_user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `account` varchar(45) NOT NULL,
   `pwd` char(32) NOT NULL,
   `create_time` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '1' COMMENT '1：正常 0：删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +357,7 @@ CREATE TABLE `bc_sys_user` (
 
 LOCK TABLES `bc_sys_user` WRITE;
 /*!40000 ALTER TABLE `bc_sys_user` DISABLE KEYS */;
-INSERT INTO `bc_sys_user` VALUES (1,'admin','1042b228a31522b81ecd262db45a2970',NULL);
+INSERT INTO `bc_sys_user` VALUES (1,'admin','1042b228a31522b81ecd262db45a2970',NULL,1),(2,'demo1','1042b228a31522b81ecd262db45a2970',NULL,1),(3,'demo2','1042b228a31522b81ecd262db45a2970',NULL,1),(4,'demo3','1042b228a31522b81ecd262db45a2970',1444359210,1);
 /*!40000 ALTER TABLE `bc_sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -197,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-11 14:31:28
+-- Dump completed on 2015-10-09 18:23:37

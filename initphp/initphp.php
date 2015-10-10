@@ -750,7 +750,7 @@ class InitPHP extends coreInit {
 		
 		$path = rtrim($InitPHP_conf['controller']['path'], '/') . '/' . $controllerPath . $controllerName . '.php';
 		if (!InitPHP::import($path)) {
-			$controllerName = ucfirst($controllerName);
+			$controllerName = lcfirst($controllerName);
 			$path = rtrim($InitPHP_conf['controller']['path'], '/') . '/' . $controllerPath . $controllerName . '.php';
 			InitPHP::import($path);
 		}
@@ -760,9 +760,9 @@ class InitPHP extends coreInit {
 		if (!method_exists($controller, $functionName))
 		return InitPHP::initError('function is not exists : ' . $controllerName);
 		if (!$params) {
-			$controller->$functionName();
+			return $controller->$functionName();
 		} else {
-			call_user_func_array(array($controller, $functionName), $params);
+			return call_user_func_array(array($controller, $functionName), $params);
 		}
 	}
 
