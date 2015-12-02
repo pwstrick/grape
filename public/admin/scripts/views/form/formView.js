@@ -58,8 +58,9 @@ define([
 			var $submit = $form.find(':submit');
 			var $parents = $submit.parents('.form-actions');
 			var $error = $parents.find('.alert-error');
+			var promptId = $form.data('promptId') || "prompt";
 			if($error.length == 0) {
-				$parents.append('<div class="alert alert-error mt10 hide" id="prompt"></div>');
+				$parents.append('<div class="alert alert-error mt10 hide" id="'+promptId+'"></div>');
 			}
 			
 			/*
@@ -104,6 +105,7 @@ define([
 //					else
 //						comUtil.setReloadTimeout();//TODO
 				}
+				viewUtil.errorSelector = '#'+promptId;
 				//var others = {id:'prompt_'+$form.attr('id'), direction:'next', container:$form.find(':submit')};
 				viewUtil.setError(json.msg);
 			};
