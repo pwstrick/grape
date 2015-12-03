@@ -38,11 +38,12 @@ define(['comUtil', 'dialogView'], function(comUtil, dialog) {
 					if(comUtil.isJsonSuccess(json)) {
 						var $tr = $this.parent().parent();
 						var $tbody = $tr.parent();
-						$tr.remove();
 						var reload = $this.data('reload');
 						if($tbody.children().length == 0 || reload === true) {
 							//当只有一条数据或设置了刷新  直接刷新当前页面
 							location.reload();
+						}else {
+							$tr.remove();
 						}
 					}
 					if(dialogView != undefined)//dialog插件
