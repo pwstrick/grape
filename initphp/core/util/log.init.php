@@ -20,6 +20,11 @@ class logInit {
 	 * @return
 	 */
 	public function write($message, $log_type = 'DEBUG') {
+		//判断是否可以写日志
+		$config = InitPHP::getConfig();
+		if(empty($config['is_log'])) {
+			return;
+		}
 		$log_path = $this->get_file_log_name();
 		if(is_file($log_path) && ($this->default_file_size < filesize($log_path)) ) {
 			rename($log_path, dirname($log_path).'/'.time().'-Bak-'.basename($log_path));

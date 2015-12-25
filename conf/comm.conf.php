@@ -15,6 +15,7 @@ $InitPHP_conf['is_xhprof'] = true; //开启xhprof性能测试-正式上线请关
 /**
  * 日志目录
  */
+$InitPHP_conf['is_log'] = true; //是否开启写日志
 $InitPHP_conf['log_dir'] = ROOT_PATH . '/logs/'; //日志目录,必须配置
 /**
  * 路由访问方式
