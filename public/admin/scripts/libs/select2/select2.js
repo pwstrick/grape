@@ -3709,8 +3709,10 @@ S2.define('select2/dropdown/search',[
 
     this.$searchContainer = $search;
     this.$search = $search.find('input');
-
-    $rendered.prepend($search);
+    
+    //判断是否需要搜索
+    if($(this.$element).data('search') === true)
+    	$rendered.prepend($search);
 
     return $rendered;
   };
