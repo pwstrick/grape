@@ -171,7 +171,14 @@ class apiController extends Controller {
 		$visitMongo = InitPHP::getMongoDao('visit', 'mongo/bi');
 		$visitMongo->updateReturn($json, $this->log_visit_id);
 		
-		$this->controller->json_return($json);
+		header("Content-type: application/json; charset=utf-8");
+		if($this->p('__debug')) {//传递debug参数 显示带换行的格式
+			print_r($json);
+		}else {
+			echo json_encode($json);
+		}
+		exit();
+		//$this->controller->json_return($json);
 	}
 	
 	/**
